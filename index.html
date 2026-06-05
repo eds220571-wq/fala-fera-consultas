@@ -1,344 +1,162 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fala Fera Consultas</title>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    background:#0f172a;
-    color:white;
-}
-
-.container{
-    display:flex;
-    min-height:100vh;
-}
-
-.sidebar{
-    width:260px;
-    background:#111827;
-    padding:20px;
-    border-right:1px solid #1f2937;
-}
-
-.logo{
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.logo h1{
-    font-size:40px;
-    color:#f59e0b;
-}
-
-.logo h2{
-    font-size:22px;
-}
-
-.menu{
-    list-style:none;
-}
-
-.menu li{
-    margin:10px 0;
-}
-
-.menu a{
-    display:block;
-    padding:14px;
-    color:white;
-    text-decoration:none;
-    border-radius:10px;
-    transition:.3s;
-}
-
-.menu a:hover{
-    background:#1e293b;
-}
-
-.menu i{
-    width:25px;
-}
-
-.main{
-    flex:1;
-    padding:30px;
-}
-
-.header{
-    margin-bottom:30px;
-}
-
-.header h1{
-    font-size:30px;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
-
-.card{
-    padding:25px;
-    border-radius:15px;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-}
-
-.cep{background:#2563eb;}
-.cnpj{background:#16a34a;}
-.pix{background:#f59e0b;}
-.ddd{background:#7c3aed;}
-.feriado{background:#dc2626;}
-
-.card i{
-    font-size:35px;
-    margin-bottom:15px;
-}
-
-.resultado{
-    margin-top:30px;
-    background:#111827;
-    padding:25px;
-    border-radius:15px;
-    min-height:250px;
-}
-
-.resultado h2{
-    margin-bottom:15px;
-}
-
-.input-area{
-    margin-top:20px;
-}
-
-.input-area input{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    margin-bottom:10px;
-}
-
-.input-area button{
-    background:#f59e0b;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-footer{
-    margin-top:20px;
-    color:#94a3b8;
-    text-align:center;
-}
-
-@media(max-width:768px){
-
-.container{
-    flex-direction:column;
-}
-
-.sidebar{
-    width:100%;
-}
-
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dashboard Fala Fera Consultas para CEP, CNPJ, DDD, feriados, bancos e PIX." />
+  <title>Fala Fera Consultas</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <img src="assets/logo-ff.png" alt="Logo Fala Fera Consultas" class="brand-logo" onerror="this.style.display='none';document.querySelector('.brand-fallback').style.display='grid'" />
+        <div class="brand-fallback">FF</div>
+        <div>
+          <h1>Fala Fera</h1>
+          <span>Consultas</span>
+        </div>
+      </div>
 
-<div class="container">
+      <nav class="menu" aria-label="Menu principal">
+        <button class="menu-item active" data-panel="dashboard"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></button>
+        <button class="menu-item" data-panel="cep"><i class="fa-solid fa-map-location-dot"></i><span>CEP</span></button>
+        <button class="menu-item" data-panel="cnpj"><i class="fa-solid fa-building"></i><span>CNPJ</span></button>
+        <button class="menu-item" data-panel="ddd"><i class="fa-solid fa-phone"></i><span>DDD</span></button>
+        <button class="menu-item" data-panel="feriados"><i class="fa-solid fa-calendar-days"></i><span>Feriados</span></button>
+        <button class="menu-item" data-panel="bancos"><i class="fa-solid fa-building-columns"></i><span>Bancos</span></button>
+        <button class="menu-item" data-panel="pix"><i class="fa-solid fa-qrcode"></i><span>PIX</span></button>
+        <button class="menu-item" data-panel="historico"><i class="fa-solid fa-clock-rotate-left"></i><span>Histórico</span></button>
+      </nav>
 
-<div class="sidebar">
+      <div class="sidebar-footer">
+        <button id="themeToggle" class="ghost-btn"><i class="fa-solid fa-moon"></i> Tema</button>
+      </div>
+    </aside>
 
-<div class="logo">
-<h1>FF</h1>
-<h2>Fala Fera Consultas</h2>
-</div>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Abrir menu"><i class="fa-solid fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Sistema Web</p>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <div class="clock" id="clock">--:--</div>
+      </header>
 
-<ul class="menu">
-<li><a href="#"><i class="fas fa-house"></i> Dashboard</a></li>
-<li><a href="#"><i class="fas fa-map-location-dot"></i> CEP</a></li>
-<li><a href="#"><i class="fas fa-building"></i> CNPJ</a></li>
-<li><a href="#"><i class="fas fa-qrcode"></i> PIX</a></li>
-<li><a href="#"><i class="fas fa-phone"></i> DDD</a></li>
-<li><a href="#"><i class="fas fa-calendar"></i> Feriados</a></li>
-</ul>
+      <section id="alert" class="alert hidden"></section>
 
-</div>
+      <section class="panel active" id="panel-dashboard">
+        <div class="hero-card">
+          <div>
+            <p class="eyebrow">Bem-vindo</p>
+            <h3>Fala Fera Consultas</h3>
+            <p>Consulte informações públicas usando BrasilAPI em uma dashboard simples, bonita e pronta para GitHub Pages.</p>
+          </div>
+          <i class="fa-solid fa-bolt hero-icon"></i>
+        </div>
 
-<div class="main">
+        <div class="cards-grid">
+          <button class="service-card blue" data-panel="cep"><i class="fa-solid fa-map-location-dot"></i><h3>CEP</h3><p>Endereço completo</p></button>
+          <button class="service-card green" data-panel="cnpj"><i class="fa-solid fa-building"></i><h3>CNPJ</h3><p>Dados empresariais</p></button>
+          <button class="service-card purple" data-panel="ddd"><i class="fa-solid fa-phone"></i><h3>DDD</h3><p>Estado e cidades</p></button>
+          <button class="service-card red" data-panel="feriados"><i class="fa-solid fa-calendar-days"></i><h3>Feriados</h3><p>Calendário nacional</p></button>
+          <button class="service-card cyan" data-panel="bancos"><i class="fa-solid fa-building-columns"></i><h3>Bancos</h3><p>Código bancário</p></button>
+          <button class="service-card orange" data-panel="pix"><i class="fa-solid fa-qrcode"></i><h3>PIX</h3><p>Leitura simples</p></button>
+        </div>
+      </section>
 
-<div class="header">
-<h1>Bem-vindo ao Fala Fera Consultas</h1>
-<p>Selecione uma consulta abaixo.</p>
-</div>
+      <section class="panel" id="panel-cep">
+        <div class="form-card">
+          <h3>Consulta CEP</h3>
+          <p>Digite somente números ou com máscara. Exemplo: 01001-000.</p>
+          <div class="form-row">
+            <input id="cepInput" placeholder="Digite o CEP" inputmode="numeric" />
+            <button class="primary-btn" id="cepBtn">Consultar</button>
+          </div>
+          <div class="result-box" id="cepResult"></div>
+        </div>
+      </section>
 
-<div class="cards">
+      <section class="panel" id="panel-cnpj">
+        <div class="form-card">
+          <h3>Consulta CNPJ</h3>
+          <p>Busca razão social, fantasia, situação, endereço e contatos.</p>
+          <div class="form-row">
+            <input id="cnpjInput" placeholder="Digite o CNPJ" inputmode="numeric" />
+            <button class="primary-btn" id="cnpjBtn">Consultar</button>
+          </div>
+          <div class="result-box" id="cnpjResult"></div>
+        </div>
+      </section>
 
-<div class="card cep" onclick="mostrar('cep')">
-<i class="fas fa-map-location-dot"></i>
-<h3>Consultar CEP</h3>
-<p>Endereços completos</p>
-</div>
+      <section class="panel" id="panel-ddd">
+        <div class="form-card">
+          <h3>Consulta DDD</h3>
+          <p>Informe o DDD para listar estado e cidades.</p>
+          <div class="form-row">
+            <input id="dddInput" placeholder="Exemplo: 19" inputmode="numeric" />
+            <button class="primary-btn" id="dddBtn">Consultar</button>
+          </div>
+          <div class="result-box" id="dddResult"></div>
+        </div>
+      </section>
 
-<div class="card cnpj" onclick="mostrar('cnpj')">
-<i class="fas fa-building"></i>
-<h3>Consultar CNPJ</h3>
-<p>Dados empresariais</p>
-</div>
+      <section class="panel" id="panel-feriados">
+        <div class="form-card">
+          <h3>Feriados Nacionais</h3>
+          <p>Informe o ano para listar os feriados nacionais.</p>
+          <div class="form-row">
+            <input id="feriadosInput" placeholder="Ano. Exemplo: 2026" inputmode="numeric" />
+            <button class="primary-btn" id="feriadosBtn">Consultar</button>
+          </div>
+          <div class="result-box" id="feriadosResult"></div>
+        </div>
+      </section>
 
-<div class="card pix" onclick="mostrar('pix')">
-<i class="fas fa-qrcode"></i>
-<h3>Decodificar PIX</h3>
-<p>Leitura do payload</p>
-</div>
+      <section class="panel" id="panel-bancos">
+        <div class="form-card">
+          <h3>Bancos</h3>
+          <p>Liste bancos ou procure por nome/código.</p>
+          <div class="form-row">
+            <input id="bancosInput" placeholder="Exemplo: 001 ou Banco do Brasil" />
+            <button class="primary-btn" id="bancosBtn">Buscar</button>
+          </div>
+          <div class="result-box" id="bancosResult"></div>
+        </div>
+      </section>
 
-<div class="card ddd" onclick="mostrar('ddd')">
-<i class="fas fa-phone"></i>
-<h3>Consultar DDD</h3>
-<p>Estado e região</p>
-</div>
+      <section class="panel" id="panel-pix">
+        <div class="form-card">
+          <h3>Leitor PIX Copia e Cola</h3>
+          <p>Leitura básica do payload EMV. Nem todos os códigos exibem todos os campos.</p>
+          <textarea id="pixInput" placeholder="Cole aqui o código PIX copia e cola"></textarea>
+          <div class="form-actions">
+            <button class="primary-btn" id="pixBtn">Decodificar</button>
+            <button class="ghost-btn" id="pixClearBtn">Limpar</button>
+          </div>
+          <div class="result-box" id="pixResult"></div>
+        </div>
+      </section>
 
-<div class="card feriado" onclick="mostrar('feriado')">
-<i class="fas fa-calendar"></i>
-<h3>Feriados</h3>
-<p>Calendário nacional</p>
-</div>
+      <section class="panel" id="panel-historico">
+        <div class="form-card">
+          <div class="section-header">
+            <div>
+              <h3>Histórico</h3>
+              <p>Últimas consultas salvas no navegador.</p>
+            </div>
+            <button class="ghost-btn" id="clearHistoryBtn">Limpar</button>
+          </div>
+          <div class="result-box" id="historyResult"></div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-</div>
-
-<div class="resultado" id="resultado">
-
-<h2>Painel de Resultados</h2>
-
-<p>Escolha uma consulta para iniciar.</p>
-
-</div>
-
-<footer>
-Fala Fera Consultas © 2026
-</footer>
-
-</div>
-
-</div>
-
-<script>
-
-function mostrar(tipo){
-
-let html='';
-
-if(tipo==='cep'){
-
-html=`
-<h2>Consulta CEP</h2>
-
-<div class="input-area">
-<input id="cep" placeholder="Digite o CEP">
-<button onclick="consultarCEP()">Consultar</button>
-</div>
-
-<div id="dados"></div>
-`;
-
-}
-
-if(tipo==='cnpj'){
-
-html=`
-<h2>Consulta CNPJ</h2>
-
-<div class="input-area">
-<input id="cnpj" placeholder="Digite o CNPJ">
-<button>Consultar</button>
-</div>
-`;
-
-}
-
-if(tipo==='pix'){
-
-html=`
-<h2>Decodificador PIX</h2>
-
-<div class="input-area">
-<input id="pix" placeholder="Cole o código PIX">
-<button>Decodificar</button>
-</div>
-`;
-
-}
-
-if(tipo==='ddd'){
-
-html=`
-<h2>Consulta DDD</h2>
-
-<div class="input-area">
-<input id="ddd" placeholder="Digite o DDD">
-<button>Consultar</button>
-</div>
-`;
-
-}
-
-if(tipo==='feriado'){
-
-html=`
-<h2>Feriados Nacionais</h2>
-
-<p>Consulta em desenvolvimento.</p>
-`;
-
-}
-
-document.getElementById('resultado').innerHTML=html;
-
-}
-
-async function consultarCEP(){
-
-const cep=document.getElementById('cep').value;
-
-const resposta=await fetch(
-`https://brasilapi.com.br/api/cep/v1/${cep}`
-);
-
-const dados=await resposta.json();
-
-document.getElementById('dados').innerHTML=`
-<br>
-<b>CEP:</b> ${dados.cep}<br>
-<b>Rua:</b> ${dados.street}<br>
-<b>Bairro:</b> ${dados.neighborhood}<br>
-<b>Cidade:</b> ${dados.city}<br>
-<b>UF:</b> ${dados.state}
-`;
-
-}
-
-</script>
-
+  <script src="js/app.js"></script>
 </body>
 </html>
